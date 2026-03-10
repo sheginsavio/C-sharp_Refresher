@@ -1,0 +1,161 @@
+Topic 3: Control Flow Statements
+1. Conditional Statements: if, else, switch
+These allow your program to make decisions.
+
+if and else
+Used when you want to check a condition and run code depending on whether it’s true or false.
+
+csharp
+int age = 18;
+
+if (age >= 18)
+{
+    Console.WriteLine("You are an adult.");
+}
+else
+{
+    Console.WriteLine("You are not an adult.");
+}
+👉 Output:
+
+Code
+You are an adult.
+💡 Analogy: Think of if as a traffic signal. If the light is green, you go; if it’s red, you stop.
+
+switch (with C# 12 enhancements)
+Used when you have multiple possible values to check.
+
+In C# 12, switch is more powerful with pattern matching.
+
+csharp
+string fruit = "apple";
+
+switch (fruit)
+{
+    case "apple":
+        Console.WriteLine("It’s red.");
+        break;
+    case "banana":
+        Console.WriteLine("It’s yellow.");
+        break;
+    case "grape":
+        Console.WriteLine("It’s purple.");
+        break;
+    default:
+        Console.WriteLine("Unknown fruit.");
+        break;
+}
+👉 Output:
+
+Code
+It’s red.
+💡 C# 12 Enhancement: You can use switch expressions for shorter code:
+
+csharp
+string fruit = "banana";
+
+string color = fruit switch
+{
+    "apple" => "Red",
+    "banana" => "Yellow",
+    "grape" => "Purple",
+    _ => "Unknown"
+};
+
+Console.WriteLine(color);
+👉 Output:
+
+Code
+Yellow
+2. Iterative Statements: for, while, do-while, foreach
+These allow your program to repeat tasks.
+
+for loop
+Runs a block of code a fixed number of times.
+
+csharp
+for (int i = 1; i <= 5; i++)
+{
+    Console.WriteLine($"Number: {i}");
+}
+👉 Output:
+
+Code
+Number: 1
+Number: 2
+Number: 3
+Number: 4
+Number: 5
+while loop
+Runs as long as a condition is true.
+
+csharp
+int count = 1;
+while (count <= 3)
+{
+    Console.WriteLine($"Count: {count}");
+    count++;
+}
+👉 Output:
+
+Code
+Count: 1
+Count: 2
+Count: 3
+do-while loop
+Similar to while, but guarantees the code runs at least once.
+
+csharp
+int number = 0;
+do
+{
+    Console.WriteLine("This runs at least once.");
+    number++;
+} while (number < 1);
+👉 Output:
+
+Code
+This runs at least once.
+foreach loop
+Used to iterate over collections (like arrays or lists).
+
+csharp
+string[] names = { "Alice", "Bob", "Charlie" };
+
+foreach (string name in names)
+{
+    Console.WriteLine(name);
+}
+👉 Output:
+
+Code
+Alice
+Bob
+Charlie
+3. Pattern Matching (switch expressions)
+Pattern matching makes decisions more expressive.
+
+csharp
+object obj = 42;
+
+string result = obj switch
+{
+    int n when n > 0 => "Positive number",
+    int n when n < 0 => "Negative number",
+    string s => $"It’s a string: {s}",
+    _ => "Unknown type"
+};
+
+Console.WriteLine(result);
+👉 Output:
+
+Code
+Positive number
+💡 This lets you check not only values but also types and conditions in a clean way.
+
+✅ Summary of Topic 3
+Conditional statements (if, else, switch) let your program make decisions.
+
+Loops (for, while, do-while, foreach) let your program repeat tasks.
+
+Pattern matching makes decision-making more powerful and expressive.

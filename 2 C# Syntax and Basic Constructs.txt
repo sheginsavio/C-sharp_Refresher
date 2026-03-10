@@ -1,0 +1,104 @@
+Topic 2: C# Syntax and Basic Constructs
+1. Writing the First Program (Hello World)
+Every programming language has a tradition: the first program prints “Hello, World!”.
+
+In C#, a simple program looks like this:
+
+csharp
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Hello, World!");
+    }
+}
+Explanation:
+using System; → Imports the System namespace, which contains useful classes like Console.
+
+class Program → Defines a class (all code in C# must be inside a class).
+
+static void Main() → The entry point of the program. This is where execution starts.
+
+Console.WriteLine("Hello, World!"); → Prints text to the console.
+
+👉 Think of Main() as the front door of your program — when you run it, the program enters through that door.
+
+2. Variables, Constants, and Data Types
+Variables are like containers that hold data.
+
+Constants are fixed values that cannot change.
+
+Data Types define what kind of data a variable can store.
+
+Common Data Types:
+Type	Example	Description
+int	10	Whole numbers
+float	3.14f	Decimal numbers (single precision)
+double	3.14159	Decimal numbers (double precision)
+string	"Hello"	Text
+bool	true/false	Logical values
+Example:
+csharp
+int age = 25;
+string name = "Alice";
+bool isStudent = true;
+const double Pi = 3.14159;
+
+Console.WriteLine($"{name} is {age} years old. Student: {isStudent}");
+👉 Output:
+
+Code
+Alice is 25 years old. Student: True
+3. Value vs Reference Types
+Value Types: Store the actual data (e.g., int, float, bool).
+
+Reference Types: Store a reference (address) to the data (e.g., string, arrays, objects).
+
+💡 Example:
+
+csharp
+int x = 10;
+int y = x; // y gets a copy of x
+y = 20;
+Console.WriteLine(x); // Output: 10 (unchanged)
+
+string s1 = "Hello";
+string s2 = s1; // s2 points to the same "Hello"
+s2 = "World";
+Console.WriteLine(s1); // Output: Hello (strings are immutable, but reference behavior differs)
+👉 Value types are like photocopies (each copy is independent).
+👉 Reference types are like two people pointing to the same house (changing the house affects both).
+
+4. Type Inference with var and new()
+Type inference means the compiler figures out the type automatically.
+
+var → Lets the compiler decide the type based on the value.
+
+new() → Shorter way to create objects without repeating the type.
+
+Example:
+csharp
+var number = 10;       // Compiler knows it's an int
+var message = "Hello"; // Compiler knows it's a string
+
+List<int> numbers = new(); // Instead of writing new List<int>()
+numbers.Add(1);
+numbers.Add(2);
+
+Console.WriteLine(message);
+👉 Output:
+
+Code
+Hello
+💡 Tip: Use var when the type is obvious, but don’t overuse it — clarity matters.
+
+✅ Summary of Topic 2
+You learned how to write your first Hello World program.
+
+Variables store data, constants hold fixed values, and data types define what kind of data you can store.
+
+Value types copy data directly, while reference types point to memory addresses.
+
+Type inference (var, new()) makes code shorter and cleaner.

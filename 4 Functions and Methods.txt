@@ -1,0 +1,132 @@
+Topic 4: Functions and Methods
+1. Defining and Calling Methods
+A method is a block of code that performs a specific task.
+
+You define it once, and then you can call it whenever you need.
+
+Example:
+csharp
+using System;
+
+class Program
+{
+    static void Greet()
+    {
+        Console.WriteLine("Hello, welcome to C#!");
+    }
+
+    static void Main()
+    {
+        Greet(); // Calling the method
+        Greet(); // You can call it multiple times
+    }
+}
+👉 Output:
+
+Code
+Hello, welcome to C#!
+Hello, welcome to C#!
+💡 Methods help avoid repeating code. Instead of writing the same lines multiple times, you put them in a method and call it.
+
+2. Parameters (in, out, ref) and Default Values
+Methods can accept parameters (inputs).
+
+Parameters make methods flexible.
+
+Normal Parameters:
+csharp
+static void PrintSum(int a, int b)
+{
+    Console.WriteLine($"Sum: {a + b}");
+}
+
+PrintSum(5, 10); // Output: Sum: 15
+in, out, ref keywords:
+in → Passes a value that cannot be changed inside the method.
+
+ref → Passes a variable by reference (changes affect the original).
+
+out → Used when a method needs to return multiple values.
+
+csharp
+// ref example
+static void DoubleValue(ref int number)
+{
+    number *= 2;
+}
+
+int x = 5;
+DoubleValue(ref x);
+Console.WriteLine(x); // Output: 10
+csharp
+// out example
+static void GetValues(out int a, out int b)
+{
+    a = 10;
+    b = 20;
+}
+
+GetValues(out int num1, out int num2);
+Console.WriteLine($"{num1}, {num2}"); // Output: 10, 20
+Default Values:
+You can assign default values to parameters.
+
+csharp
+static void SayHello(string name = "Guest")
+{
+    Console.WriteLine($"Hello, {name}!");
+}
+
+SayHello();          // Output: Hello, Guest!
+SayHello("Alice");   // Output: Hello, Alice!
+3. Method Overloading
+You can define multiple methods with the same name but different parameters.
+
+The compiler decides which one to use based on arguments.
+
+csharp
+static void Display(int number)
+{
+    Console.WriteLine($"Number: {number}");
+}
+
+static void Display(string text)
+{
+    Console.WriteLine($"Text: {text}");
+}
+
+Display(100);       // Output: Number: 100
+Display("Hello");   // Output: Text: Hello
+👉 This is called overloading — same name, different signatures.
+
+4. Local Functions
+You can define methods inside other methods.
+
+Useful when a helper method is only needed in one place.
+
+csharp
+static void Main()
+{
+    void PrintMessage(string msg)
+    {
+        Console.WriteLine(msg);
+    }
+
+    PrintMessage("This is a local function!");
+}
+👉 Output:
+
+Code
+This is a local function!
+💡 Local functions keep your code organized and prevent clutter in the global scope.
+
+✅ Summary of Topic 4
+Methods are reusable blocks of code.
+
+Parameters (in, ref, out) control how data is passed.
+
+Default values make methods flexible.
+
+Method overloading allows multiple versions of the same method.
+
+Local functions help keep code organized.
