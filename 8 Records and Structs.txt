@@ -1,0 +1,126 @@
+Topic 8: Records and Structs
+1. Value Equality and Immutability
+Classes in C# compare objects by reference (memory address).
+
+Records and structs compare by value — meaning two objects are equal if their contents are equal.
+
+Immutability means once created, the object’s data cannot be changed.
+
+Example with Records:
+csharp
+public record Employee(string Name, int Age);
+
+class Program
+{
+    static void Main()
+    {
+        var e1 = new Employee("Alice", 25);
+        var e2 = new Employee("Alice", 25);
+
+        Console.WriteLine(e1 == e2); // True (value equality)
+    }
+}
+👉 Output:
+
+Code
+True
+💡 Theory: Records are perfect for data models where equality should be based on values, not memory location.
+
+2. Introduction to Records and With-expressions
+Records are designed for data-centric programming.
+
+You can use with-expressions to create a copy of a record with some changes.
+
+Example:
+csharp
+public record Student(string Name, int Age);
+
+class Program
+{
+    static void Main()
+    {
+        var s1 = new Student("Bob", 20);
+        var s2 = s1 with { Age = 21 }; // Copy with modification
+
+        Console.WriteLine(s1); // Output: Student { Name = Bob, Age = 20 }
+        Console.WriteLine(s2); // Output: Student { Name = Bob, Age = 21 }
+    }
+}
+💡 Theory: Records are immutable by default, but with-expressions let you create modified copies easily.
+
+3. Struct Improvements in C# 12
+Structs are value types (stored directly in memory).
+
+Useful for small, lightweight objects (like coordinates, points, colors).
+
+C# 12 adds improvements like parameterless constructors and better initialization.
+
+Example:
+csharp
+struct Point
+{
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    // Parameterless constructor (C# 12 feature)
+    public Point()
+    {
+        X = 0;
+        Y = 0;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Point p = new Point(); // Uses parameterless constructor
+        Console.WriteLine($"Point: X={p.X}, Y={p.Y}");
+    }
+}
+👉 Output:
+
+Code
+Point: X=0, Y=0
+💡 Theory: Structs are efficient for small data objects because they avoid heap allocation.
+
+🌍 Real-World Instances
+Records
+Instance: In a student management system, you want to store student data (Name, Age, Grade).
+
+Implementation: Use records because they are immutable and compare by value.
+
+csharp
+public record Student(string Name, int Age, string Grade);
+👉 Benefit: Easy to copy and modify data safely without affecting the original.
+
+Structs
+Instance: In a game engine, you need to store coordinates (X, Y) for thousands of objects.
+
+Implementation: Use structs because they are lightweight and efficient.
+
+csharp
+struct Position
+{
+    public int X { get; set; }
+    public int Y { get; set; }
+}
+👉 Benefit: Faster performance since structs are stored directly in memory.
+
+Combined Use
+Instance: In a financial application, you might use:
+
+Record for immutable transaction data (TransactionId, Amount, Date).
+
+Struct for lightweight currency values or coordinates in a chart.
+
+👉 Benefit: Records ensure transaction data cannot be accidentally changed, while structs keep performance high for small repeated values.
+
+✅ Summary of Topic 8
+Records: Immutable, value-based equality, great for data models.
+
+With-expressions: Create modified copies of records easily.
+
+Structs: Lightweight value types, efficient for small objects.
+
+Real-world use: Records for data transfer objects, structs for performance-critical applications like graphics or simulations.

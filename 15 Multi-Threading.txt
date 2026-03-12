@@ -1,0 +1,337 @@
+Multi-Threading
+1. What is Multi-Threading?
+Theory: Multi-threading is the ability of a program to run multiple tasks (threads) at the same time. Each thread is an independent path of execution inside a process.
+
+Real-Life Analogy: Imagine a restaurant kitchen. One chef cooks rice, another fries chicken, another makes salad — all at the same time. That’s multi-threading. If only one chef did everything sequentially, customers would wait much longer.
+
+Practical Example:
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void Main()
+    {
+        Thread t1 = new Thread(() => Console.WriteLine("Cooking rice..."));
+        Thread t2 = new Thread(() => Console.WriteLine("Frying chicken..."));
+
+        t1.Start();
+        t2.Start();
+
+        Console.WriteLine("Main thread: Preparing salad...");
+    }
+}
+👉 Output (order may vary):
+
+Code
+Cooking rice...
+Frying chicken...
+Main thread: Preparing salad...
+2. Importance of Multi-Threading
+Theory: Multi-threading improves performance, keeps applications responsive, and enables parallelism.
+
+Real-Life Analogy: In a call center, multiple agents handle different calls at once. If only one agent worked, customers would wait endlessly.
+
+Practical Example:
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void Main()
+    {
+        Thread downloadThread = new Thread(() =>
+        {
+            Console.WriteLine("Downloading file...");
+            Thread.Sleep(3000); // Simulate long task
+            Console.WriteLine("Download complete!");
+        });
+
+        downloadThread.Start();
+
+        Console.WriteLine("Main thread: User can still scroll the page.");
+    }
+}
+👉 Output:
+
+Code
+Downloading file...
+Main thread: User can still scroll the page.
+Download complete!
+3. Multi-Threaded Applications
+Theory: Applications that benefit from multi-threading include games, web servers, and banking apps.
+
+Real-Life Analogy: A supermarket has multiple cashiers. Customers don’t wait in a single line for one cashier; instead, multiple cashiers serve them simultaneously.
+
+Practical Example (Web Server Simulation):
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void HandleRequest(object id)
+    {
+        Console.WriteLine($"Handling request {id}...");
+        Thread.Sleep(2000); // Simulate processing
+        Console.WriteLine($"Request {id} completed.");
+    }
+
+    static void Main()
+    {
+        for (int i = 1; i <= 3; i++)
+        {
+            Thread t = new Thread(HandleRequest);
+            t.Start(i);
+        }
+    }
+}
+👉 Output (order may vary):
+
+Code
+Handling request 1...
+Handling request 2...
+Handling request 3...
+Request 2 completed.
+Request 1 completed.
+Request 3 completed.
+4. System.Threading Namespace
+Theory: Provides classes for managing threads (Thread, Monitor, Mutex, Timer, etc.).
+
+Real-Life Analogy: Think of it as the “toolbox” for managing workers in a factory — you have tools to hire workers, assign tasks, and control their behavior.
+
+Practical Example:
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Using System.Threading namespace to create threads.");
+        Thread t = new Thread(() => Console.WriteLine("Worker thread running..."));
+        t.Start();
+    }
+}
+5. System.Threading.Thread Class
+Theory: Represents a thread in C#. You can create, start, pause, and stop threads using this class.
+
+Real-Life Analogy: Hiring a new worker in a company. You can assign them tasks, check their status, and even stop their work.
+
+Practical Example:
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void PrintNumbers()
+    {
+        for (int i = 1; i <= 5; i++)
+        {
+            Console.WriteLine($"Thread printing: {i}");
+            Thread.Sleep(500);
+        }
+    }
+
+    static void Main()
+    {
+        Thread worker = new Thread(PrintNumbers);
+        worker.Start();
+
+        Console.WriteLine("Main thread continues working...");
+    }
+}
+👉 Output:
+
+Code
+Main thread continues working...
+Thread printing: 1
+Thread printing: 2
+Thread printing: 3
+Thread printing: 4
+Thread printing: 5
+
+6. Process vs Thread
+Theory:
+
+A process is an independent application instance (e.g., Microsoft Word, Chrome).
+
+A thread is a smaller unit of execution inside a process. A process can have multiple threads.
+
+Real-Life Analogy:
+
+Think of a factory (process). Inside the factory, there are multiple workers (threads). Each worker does a specific task, but they all belong to the same factory.
+
+Practical Example:
+
+csharp
+using System;
+using System.Diagnostics;
+using System.Threading;
+
+class Program
+{
+    static void Main()
+    {
+        Process currentProcess = Process.GetCurrentProcess();
+        Console.WriteLine($"Process: {currentProcess.ProcessName}");
+
+        Thread currentThread = Thread.CurrentThread;
+        Console.WriteLine($"Thread ID: {currentThread.ManagedThreadId}");
+    }
+}
+👉 Output:
+
+Code
+Process: dotnet
+Thread ID: 1
+7. Thread Life Cycle
+Theory: Threads go through states:
+
+Unstarted → Created but not started.
+
+Running → Actively executing.
+
+Wait/Sleep/Join → Temporarily paused.
+
+Stopped → Finished execution.
+
+Real-Life Analogy:
+
+A worker’s day: not started → working → taking a break → finished.
+
+Practical Example:
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void Worker()
+    {
+        Console.WriteLine("Thread is running...");
+        Thread.Sleep(1000);
+        Console.WriteLine("Thread finished.");
+    }
+
+    static void Main()
+    {
+        Thread t = new Thread(Worker);
+        Console.WriteLine($"Thread state before start: {t.ThreadState}");
+        t.Start();
+        Console.WriteLine($"Thread state after start: {t.ThreadState}");
+    }
+}
+8. Obtaining Current Thread Information
+Theory: You can get details about the currently running thread (ID, priority, state).
+
+Real-Life Analogy: Checking an employee’s ID badge and role in a company.
+
+Practical Example:
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void Main()
+    {
+        Thread current = Thread.CurrentThread;
+        Console.WriteLine($"Thread ID: {current.ManagedThreadId}");
+        Console.WriteLine($"Thread Priority: {current.Priority}");
+        Console.WriteLine($"Thread State: {current.ThreadState}");
+    }
+}
+👉 Output:
+
+Code
+Thread ID: 1
+Thread Priority: Normal
+Thread State: Running
+9. Thread Creation
+Theory: You can create threads by passing a method to the Thread constructor.
+
+Real-Life Analogy: Assigning a worker a specific task in a company.
+
+Practical Example:
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void PrintNumbers()
+    {
+        for (int i = 1; i <= 3; i++)
+        {
+            Console.WriteLine($"Thread printing: {i}");
+            Thread.Sleep(500);
+        }
+    }
+
+    static void Main()
+    {
+        Thread worker = new Thread(PrintNumbers);
+        worker.Start();
+
+        Console.WriteLine("Main thread continues working...");
+    }
+}
+👉 Output:
+
+Code
+Main thread continues working...
+Thread printing: 1
+Thread printing: 2
+Thread printing: 3
+10. Background Thread
+Theory:
+
+A background thread runs in the background and automatically ends when the main program ends.
+
+Foreground threads keep the program alive until they finish.
+
+Real-Life Analogy:
+
+Cleaning staff in a mall — they work in the background, but when the mall closes, they stop.
+
+Practical Example:
+
+csharp
+using System;
+using System.Threading;
+
+class Program
+{
+    static void BackgroundWork()
+    {
+        Thread.Sleep(2000);
+        Console.WriteLine("Background work finished.");
+    }
+
+    static void Main()
+    {
+        Thread t = new Thread(BackgroundWork);
+        t.IsBackground = true; // Mark as background thread
+        t.Start();
+
+        Console.WriteLine("Main thread ends immediately.");
+    }
+}
+👉 Output:
+
+Code
+Main thread ends immediately.
+(The background thread may not finish if the main program exits first.)

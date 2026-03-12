@@ -1,0 +1,94 @@
+Nullable Types and Null Safety
+1. Handling Null References and ? Operator
+In C#, null means “no value” or “nothing.”
+
+If you try to use a null object, you’ll get a NullReferenceException.
+
+To prevent this, you can use nullable types and the ? operator.
+
+Example:
+csharp
+string? name = null; // Nullable string
+
+if (name == null)
+{
+    Console.WriteLine("Name is not set.");
+}
+👉 Output:
+
+Code
+Name is not set.
+💡 Theory: Adding ? makes a type nullable. Without it, reference types can still be null, but value types (like int) cannot unless explicitly marked as int?.
+
+2. Null-Coalescing (??) and Null-Conditional (?.) Operators
+These operators help you handle null values more elegantly.
+
+Null-Coalescing (??)
+Provides a default value if something is null.
+
+csharp
+string? name = null;
+string displayName = name ?? "Guest"; // If name is null, use "Guest"
+Console.WriteLine(displayName);
+👉 Output:
+
+Code
+Guest
+Null-Conditional (?.)
+Safely calls a method or property only if the object is not null.
+
+csharp
+string? message = null;
+Console.WriteLine(message?.ToUpper()); // No error, just prints nothing
+👉 Output:
+
+Code
+(blank line)
+💡 Theory: These operators prevent crashes by handling null gracefully.
+
+3. Required Modifier in C# 12
+Sometimes you want to force certain properties to be initialized when creating an object.
+
+The required modifier ensures that those properties are never left null.
+
+Example:
+csharp
+public class User
+{
+    public required string Username { get; init; }
+    public string? Email { get; init; } // Optional
+}
+
+class Program
+{
+    static void Main()
+    {
+        var user = new User { Username = "Alice" }; // ✅ Works
+        // var user2 = new User { }; ❌ Error: Username is required
+        Console.WriteLine(user.Username);
+    }
+}
+👉 Output:
+
+Code
+Alice
+💡 Theory: This prevents bugs where critical data is missing.
+
+🌍 Real-World Instances
+Instance 1: Web Forms
+Scenario: A user submits a form but leaves some fields blank.
+
+Implementation: Use nullable types (string?) for optional fields, and required for mandatory ones.
+👉 Benefit: Prevents runtime errors and enforces validation rules.
+
+Instance 2: Database Applications
+Scenario: Some database columns allow NULL values (e.g., middle name).
+
+Implementation: Use int?, DateTime?, or string? to represent nullable columns.
+👉 Benefit: Matches database schema safely in code.
+
+Instance 3: APIs
+Scenario: An API response may or may not include certain fields.
+
+Implementation: Use null-coalescing (??) to provide defaults when fields are missing.
+👉 Benefit: Prevents crashes when consuming external data.

@@ -1,0 +1,487 @@
+Collections and LINQ
+1. Arrays, Lists, Dictionaries, Queues, and Stacks
+Array: Fixed-size collection of elements.
+
+List: Dynamic collection that can grow/shrink.
+
+Dictionary: Key-value pairs (like a phone book).
+
+Queue: First-In-First-Out (FIFO).
+
+Stack: Last-In-First-Out (LIFO).
+
+Example:
+csharp
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        // Array
+        int[] numbers = { 1, 2, 3, 4 };
+        Console.WriteLine(numbers[2]); // Output: 3
+
+        // List
+        List<string> names = new List<string> { "Alice", "Bob" };
+        names.Add("Charlie");
+        Console.WriteLine(names[1]); // Output: Bob
+
+        // Dictionary
+        Dictionary<int, string> students = new Dictionary<int, string>();
+        students[1] = "John";
+        students[2] = "Mary";
+        Console.WriteLine(students[2]); // Output: Mary
+
+        // Queue
+        Queue<string> tasks = new Queue<string>();
+        tasks.Enqueue("Task1");
+        tasks.Enqueue("Task2");
+        Console.WriteLine(tasks.Dequeue()); // Output: Task1
+
+        // Stack
+        Stack<string> history = new Stack<string>();
+        history.Push("Page1");
+        history.Push("Page2");
+        Console.WriteLine(history.Pop()); // Output: Page2
+    }
+}
+💡 Theory: Collections let you organize data efficiently depending on the use case.
+
+2. Iterating Collections using foreach
+foreach is the easiest way to loop through collections.
+
+csharp
+List<string> fruits = new List<string> { "Apple", "Banana", "Cherry" };
+
+foreach (string fruit in fruits)
+{
+    Console.WriteLine(fruit);
+}
+👉 Output:
+
+Code
+Apple
+Banana
+Cherry
+3. Generics
+Generics allow you to create collections that work with any type safely.
+
+Example: List<int> vs List<string>.
+
+csharp
+List<int> scores = new List<int> { 90, 85, 100 };
+foreach (int score in scores)
+{
+    Console.WriteLine(score);
+}
+💡 Theory: Generics prevent errors by enforcing type safety.
+
+4. LINQ Queries for Filtering and Transformation
+LINQ (Language Integrated Query) lets you query collections like databases.
+
+You can filter, sort, and transform data easily.
+
+Example:
+csharp
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        List<int> numbers = new List<int> { 1, 2, 3, 4, 5, 6 };
+
+        // Filter even numbers
+        var evens = numbers.Where(n => n % 2 == 0);
+
+        // Transform (square each number)
+        var squares = numbers.Select(n => n * n);
+
+        // Sort descending
+        var sorted = numbers.OrderByDescending(n => n);
+
+        Console.WriteLine("Evens: " + string.Join(", ", evens));
+        Console.WriteLine("Squares: " + string.Join(", ", squares));
+        Console.WriteLine("Sorted: " + string.Join(", ", sorted));
+    }
+}
+👉 Output:
+
+Code
+Evens: 2, 4, 6
+Squares: 1, 4, 9, 16, 25, 36
+Sorted: 6, 5, 4, 3, 2, 1
+💡 Theory: LINQ makes working with collections as easy as writing SQL queries.
+
+🌍 Real-World Instances
+Instance 1: E-commerce Platform
+Scenario: Store a list of products, filter by category, sort by price.
+
+Implementation: Use List<Product> and LINQ queries like:
+
+csharp
+var cheapProducts = products.Where(p => p.Price < 100).OrderBy(p => p.Price);
+👉 Benefit: Efficient product filtering for customers.
+
+Instance 2: Banking System
+Scenario: Store transactions in a list, calculate totals, filter by date.
+
+Implementation: Use List<Transaction> and LINQ:
+
+csharp
+var recentTransactions = transactions.Where(t => t.Date > DateTime.Now.AddDays(-30));
+👉 Benefit: Easy reporting and analytics.
+
+Instance 3: Social Media App
+Scenario: Store user posts, filter by hashtags, sort by likes.
+
+Implementation: Use List<Post> and LINQ:
+
+csharp
+var trending = posts.Where(p => p.Hashtag == "#Tech").OrderByDescending(p => p.Likes);
+👉 Benefit: Efficient feed generation.
+
+✅ Summary of Topic 11
+Collections: Arrays, Lists, Dictionaries, Queues, Stacks organize data.
+
+foreach makes iteration simple.
+
+Generics enforce type safety.
+
+LINQ provides powerful querying and transformation tools.
+
+Real-world use: E-commerce filtering, banking reports, social media feeds.
+
+Generics in C#
+1. What Are Generics?
+Generics let you define classes, methods, interfaces, and collections with a placeholder for the data type.
+
+Instead of writing separate code for int, string, double, etc., you write it once with a type parameter (like <T>).
+
+The compiler enforces type safety, so you avoid runtime errors.
+
+💡 Analogy: Think of generics like a mold that can produce cups of any material (plastic, glass, steel). The mold is the same, but the material changes.
+
+2. Generic Classes
+You can create your own generic classes.
+
+Example:
+csharp
+class Box<T>
+{
+    private T content;
+
+    public void Add(T item)
+    {
+        content = item;
+    }
+
+    public T Get()
+    {
+        return content;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Box<int> intBox = new Box<int>();
+        intBox.Add(100);
+        Console.WriteLine(intBox.Get()); // Output: 100
+
+        Box<string> strBox = new Box<string>();
+        strBox.Add("Hello");
+        Console.WriteLine(strBox.Get()); // Output: Hello
+    }
+}
+👉 Theory: Box<T> works with any type (int, string, etc.) without rewriting the class.
+
+3. Generic Methods
+You can also make methods generic.
+
+Example:
+csharp
+class Program
+{
+    static void PrintItem<T>(T item)
+    {
+        Console.WriteLine($"Item: {item}");
+    }
+
+    static void Main()
+    {
+        PrintItem(42);        // Output: Item: 42
+        PrintItem("Generics"); // Output: Item: Generics
+    }
+}
+👉 Theory: The method PrintItem<T> works with any type passed to it.
+
+4. Generic Constraints
+Sometimes you want to restrict what types can be used with generics.
+
+Example:
+csharp
+class Repository<T> where T : class
+{
+    public void Save(T entity)
+    {
+        Console.WriteLine($"{entity.GetType().Name} saved!");
+    }
+}
+
+class User { }
+
+class Program
+{
+    static void Main()
+    {
+        Repository<User> repo = new Repository<User>();
+        repo.Save(new User()); // Output: User saved!
+    }
+}
+👉 Theory: The where T : class constraint ensures only reference types (like User) can be used.
+
+5. Generics in Collections
+Most built-in collections in C# are generic:
+
+List<T>
+
+Dictionary<TKey, TValue>
+
+Queue<T>
+
+Stack<T>
+
+Example:
+csharp
+List<int> scores = new List<int> { 90, 85, 100 };
+Dictionary<int, string> students = new Dictionary<int, string>
+{
+    {1, "Alice"},
+    {2, "Bob"}
+};
+
+Console.WriteLine(scores[0]);       // Output: 90
+Console.WriteLine(students[2]);     // Output: Bob
+👉 Theory: Generics make collections type-safe — you can’t accidentally add a string to a List<int>.
+
+🌍 Real-World Instances of Generics
+Instance 1: Data Access Layer
+Scenario: A repository pattern for saving different entities (User, Product, Order).
+
+Implementation: Use a generic Repository<T> class.
+👉 Benefit: One repository class works for all entities.
+
+Instance 2: Utility Methods
+Scenario: A method to swap two values of any type.
+
+Implementation:
+
+csharp
+static void Swap<T>(ref T a, ref T b)
+{
+    T temp = a;
+    a = b;
+    b = temp;
+}
+👉 Benefit: Works for int, string, double, etc.
+
+Instance 3: Collections
+Scenario: Store different types of data safely.
+
+Implementation: Use List<T> or Dictionary<TKey, TValue>.
+👉 Benefit: Prevents type errors and improves performance.
+
+✅ Summary
+Generics allow reusable, type-safe code.
+
+You can create generic classes, methods, and collections.
+
+Constraints let you control what types are allowed.
+
+Real-world use: repositories, utility methods, type-safe collections.
+
+Would you like me to proceed to Topic 12: Tuples and Pattern Matching Enhancements, or would you prefer me to go even deeper into generics (like advanced constraints, covariance/contravariance, and generic interfaces)?
+
+Perfect — let’s go deeper into Generics in C#. We’ve covered the basics, but generics have advanced features that make them extremely powerful in real-world applications. I’ll explain each concept, show code, and then give you an instance of where it’s used.
+
+🟢 Advanced Generics in C#
+1. Generic Interfaces
+Interfaces can also be generic, allowing different implementations to work with different types.
+
+Example:
+csharp
+interface IRepository<T>
+{
+    void Add(T item);
+    T Get(int id);
+}
+
+class UserRepository : IRepository<User>
+{
+    private List<User> users = new();
+
+    public void Add(User item) => users.Add(item);
+    public User Get(int id) => users[id];
+}
+
+class User { public string Name { get; set; } }
+
+class Program
+{
+    static void Main()
+    {
+        IRepository<User> repo = new UserRepository();
+        repo.Add(new User { Name = "Alice" });
+        Console.WriteLine(repo.Get(0).Name); // Output: Alice
+    }
+}
+👉 Instance: Used in data access layers (repositories for users, products, orders).
+👉 Benefit: One interface works for all entity types.
+
+2. Generic Delegates and Events
+Delegates can be generic, allowing flexible event handling.
+
+Example:
+csharp
+delegate T Operation<T>(T a, T b);
+
+class Program
+{
+    static void Main()
+    {
+        Operation<int> add = (x, y) => x + y;
+        Operation<string> concat = (x, y) => x + y;
+
+        Console.WriteLine(add(5, 10));       // Output: 15
+        Console.WriteLine(concat("Hi ", "There")); // Output: Hi There
+    }
+}
+👉 Instance: Used in event-driven systems (logging, UI events).
+👉 Benefit: Same delegate works for multiple types.
+
+3. Generic Constraints (Advanced)
+Constraints let you control what types can be used with generics.
+
+where T : class → Only reference types.
+
+where T : struct → Only value types.
+
+where T : new() → Must have a parameterless constructor.
+
+where T : BaseClass → Must inherit from a specific class.
+
+where T : IInterface → Must implement an interface.
+
+Example:
+csharp
+class Factory<T> where T : new()
+{
+    public T Create()
+    {
+        return new T(); // Works only if T has a parameterless constructor
+    }
+}
+
+class Product { }
+
+class Program
+{
+    static void Main()
+    {
+        Factory<Product> factory = new Factory<Product>();
+        Product p = factory.Create();
+        Console.WriteLine("Product created!");
+    }
+}
+👉 Instance: Used in factories to create objects generically.
+👉 Benefit: Ensures type safety and flexibility.
+
+4. Covariance and Contravariance
+Covariance (out): Allows you to use a more derived type than specified.
+
+Contravariance (in): Allows you to use a less derived type.
+
+Example:
+csharp
+interface ICovariant<out T>
+{
+    T Get();
+}
+
+class Animal { }
+class Dog : Animal { }
+
+class DogProvider : ICovariant<Dog>
+{
+    public Dog Get() => new Dog();
+}
+
+class Program
+{
+    static void Main()
+    {
+        ICovariant<Dog> dogProvider = new DogProvider();
+        ICovariant<Animal> animalProvider = dogProvider; // Covariance
+        Animal a = animalProvider.Get();
+        Console.WriteLine("Got an Animal from DogProvider!");
+    }
+}
+👉 Instance: Used in collections and APIs where you want flexibility in type assignments.
+👉 Benefit: Makes generic interfaces more adaptable.
+
+5. Real-World Example: Generic Repository Pattern
+This is a common design pattern in enterprise applications.
+
+csharp
+interface IRepository<T>
+{
+    void Add(T entity);
+    IEnumerable<T> GetAll();
+}
+
+class Repository<T> : IRepository<T>
+{
+    private List<T> items = new();
+
+    public void Add(T entity) => items.Add(entity);
+    public IEnumerable<T> GetAll() => items;
+}
+
+class Product { public string Name { get; set; } }
+
+class Program
+{
+    static void Main()
+    {
+        IRepository<Product> productRepo = new Repository<Product>();
+        productRepo.Add(new Product { Name = "Laptop" });
+        productRepo.Add(new Product { Name = "Phone" });
+
+        foreach (var product in productRepo.GetAll())
+        {
+            Console.WriteLine(product.Name);
+        }
+    }
+}
+👉 Output:
+
+Code
+Laptop
+Phone
+👉 Instance: Used in database access layers.
+👉 Benefit: One repository works for all entities (Users, Products, Orders) without rewriting code.
+
+✅ Summary of Advanced Generics
+Generic interfaces: Reusable contracts for multiple types.
+
+Generic delegates/events: Flexible event handling.
+
+Constraints: Control what types are allowed.
+
+Covariance/Contravariance: Flexible type assignments in generics.
+
+Repository pattern: Real-world enterprise use case.

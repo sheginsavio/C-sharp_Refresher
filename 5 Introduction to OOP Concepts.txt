@@ -1,0 +1,123 @@
+Topic 5: Introduction to OOP Concepts
+1. Classes and Objects
+Class: A blueprint or template (like a recipe).
+
+Object: An actual instance created from that blueprint (like the cake made from the recipe).
+
+Example:
+csharp
+class Car
+{
+    public string Brand;
+    public int Year;
+
+    public void Drive()
+    {
+        Console.WriteLine($"{Brand} is driving!");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Car myCar = new Car(); // Create an object
+        myCar.Brand = "Toyota";
+        myCar.Year = 2022;
+
+        Console.WriteLine($"Car: {myCar.Brand}, Year: {myCar.Year}");
+        myCar.Drive();
+    }
+}
+👉 Output:
+
+Code
+Car: Toyota, Year: 2022
+Toyota is driving!
+💡 Analogy: The class is like a mold for making toys. Each toy you make from it is an object.
+
+2. Constructors (including Primary Constructors in C# 12)
+A constructor is a special method that runs when you create an object.
+
+It initializes the object with default or given values.
+
+Normal Constructor:
+csharp
+class Student
+{
+    public string Name;
+    public int Age;
+
+    public Student(string name, int age) // Constructor
+    {
+        Name = name;
+        Age = age;
+    }
+}
+
+var student = new Student("Alice", 20);
+Console.WriteLine($"{student.Name}, {student.Age}");
+👉 Output:
+
+Code
+Alice, 20
+Primary Constructor (C# 12 feature):
+csharp
+public class Student(string name, int age)
+{
+    public string Name { get; } = name;
+    public int Age { get; } = age;
+}
+
+var student = new Student("Bob", 22);
+Console.WriteLine($"{student.Name}, {student.Age}");
+👉 Output:
+
+Code
+Bob, 22
+💡 Primary constructors make code shorter and cleaner.
+
+3. Access Modifiers
+Access modifiers control who can see or use parts of your code.
+
+public → Accessible everywhere.
+
+private → Accessible only inside the class.
+
+protected → Accessible inside the class and derived classes.
+
+internal → Accessible only within the same project/assembly.
+
+Example:
+csharp
+class BankAccount
+{
+    private double balance; // Only accessible inside this class
+
+    public void Deposit(double amount)
+    {
+        balance += amount;
+    }
+
+    public void ShowBalance()
+    {
+        Console.WriteLine($"Balance: {balance}");
+    }
+}
+
+var account = new BankAccount();
+account.Deposit(1000);
+// account.balance = 5000; ❌ Error: balance is private
+account.ShowBalance(); // ✅ Works
+👉 Output:
+
+Code
+Balance: 1000
+💡 Access modifiers are like locks on doors — they control who can enter.
+
+✅ Summary of Topic 5
+Classes are blueprints, objects are instances.
+
+Constructors initialize objects; C# 12 adds primary constructors for simplicity.
+
+Access modifiers control visibility and security of code.

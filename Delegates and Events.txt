@@ -1,0 +1,121 @@
+Delegates and Events
+1. Delegates
+A delegate is like a pointer to a method.
+
+It allows you to pass methods as parameters or store them for later execution.
+
+Delegates enable callbacks — one method can call another indirectly.
+
+Example:
+csharp
+using System;
+
+delegate void Notify(string message); // Delegate definition
+
+class Program
+{
+    static void ShowMessage(string msg)
+    {
+        Console.WriteLine($"Notification: {msg}");
+    }
+
+    static void Main()
+    {
+        Notify notifier = ShowMessage; // Assign method to delegate
+        notifier("Delegates are powerful!"); // Call via delegate
+    }
+}
+👉 Output:
+
+Code
+Notification: Delegates are powerful!
+💡 Theory: Delegates decouple the caller from the method being executed.
+
+2. Events
+An event is built on top of delegates.
+
+It represents something that happens (like a button click).
+
+Other parts of the program can subscribe to the event and react when it occurs.
+
+Example:
+csharp
+using System;
+
+class Button
+{
+    public event Action Clicked; // Event using delegate
+
+    public void Click()
+    {
+        Console.WriteLine("Button was clicked!");
+        Clicked?.Invoke(); // Trigger event if subscribers exist
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Button btn = new Button();
+
+        // Subscribe to event
+        btn.Clicked += () => Console.WriteLine("Event handler: Button click detected.");
+
+        btn.Click(); // Trigger event
+    }
+}
+👉 Output:
+
+Code
+Button was clicked!
+Event handler: Button click detected.
+💡 Theory: Events let you build reactive systems where multiple parts of the program respond to the same action.
+
+3. Multicast Delegates
+Delegates can hold multiple methods at once.
+
+When invoked, all methods run in sequence.
+
+Example:
+csharp
+delegate void Logger(string message);
+
+class Program
+{
+    static void LogToConsole(string msg) => Console.WriteLine($"Console: {msg}");
+    static void LogToFile(string msg) => Console.WriteLine($"File: {msg}");
+
+    static void Main()
+    {
+        Logger logger = LogToConsole;
+        logger += LogToFile; // Add another method
+
+        logger("Delegates can call multiple methods!");
+    }
+}
+👉 Output:
+
+Code
+Console: Delegates can call multiple methods!
+File: Delegates can call multiple methods!
+💡 Theory: Multicast delegates are useful for broadcasting messages to multiple listeners.
+
+🌍 Real-World Instances
+Instance 1: GUI Applications
+Scenario: A button click triggers multiple actions (update UI, log activity, send notification).
+
+Implementation: Use events (Button.Clicked) with multiple subscribers.
+👉 Benefit: Clean separation of concerns — UI code doesn’t need to know what happens after the click.
+
+Instance 2: Logging Systems
+Scenario: Log messages to console, file, and database simultaneously.
+
+Implementation: Use multicast delegates.
+👉 Benefit: One log call triggers multiple outputs.
+
+Instance 3: Game Development
+Scenario: When a player scores, update the scoreboard, play a sound, and save progress.
+
+Implementation: Use events (Player.Scored) with multiple handlers.
+👉 Benefit: Reactive design — game components respond independently.

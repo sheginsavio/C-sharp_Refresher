@@ -1,0 +1,134 @@
+Exception Handling
+1. try-catch-finally Blocks
+try → Code that might throw an error.
+
+catch → Handles the error if it occurs.
+
+finally → Runs no matter what (cleanup code).
+
+Example:
+csharp
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        try
+        {
+            int[] numbers = { 1, 2, 3 };
+            Console.WriteLine(numbers[5]); // ❌ Error: Index out of range
+        }
+        catch (IndexOutOfRangeException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            Console.WriteLine("Program finished execution.");
+        }
+    }
+}
+👉 Output:
+
+Code
+Error: Index was outside the bounds of the array.
+Program finished execution.
+💡 Theory: The program doesn’t crash — instead, it reports the error and continues safely.
+
+2. Custom Exceptions
+You can create your own exception types for specific business rules.
+
+Example:
+csharp
+class InsufficientFundsException : Exception
+{
+    public InsufficientFundsException(string message) : base(message) { }
+}
+
+class BankAccount
+{
+    public double Balance { get; private set; }
+
+    public BankAccount(double initialBalance)
+    {
+        Balance = initialBalance;
+    }
+
+    public void Withdraw(double amount)
+    {
+        if (amount > Balance)
+            throw new InsufficientFundsException("Withdrawal exceeds balance!");
+        Balance -= amount;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        try
+        {
+            BankAccount acc = new BankAccount(500);
+            acc.Withdraw(1000); // ❌ Custom exception
+        }
+        catch (InsufficientFundsException ex)
+        {
+            Console.WriteLine($"Bank Error: {ex.Message}");
+        }
+    }
+}
+👉 Output:
+
+Code
+Bank Error: Withdrawal exceeds balance!
+💡 Theory: Custom exceptions make error messages more meaningful for your application.
+
+3. Exception Filters (when Clause)
+You can filter exceptions with conditions.
+
+Example:
+csharp
+try
+{
+    int number = int.Parse("abc"); // ❌ FormatException
+}
+catch (FormatException ex) when (ex.Message.Contains("Input string"))
+{
+    Console.WriteLine("Error: Invalid number format.");
+}
+👉 Output:
+
+Code
+Error: Invalid number format.
+💡 Theory: Filters let you handle exceptions differently depending on context.
+
+🌍 Real-World Instances
+Instance 1: File Handling
+Scenario: A program reads a file. If the file doesn’t exist, it should not crash.
+
+Implementation:
+
+csharp
+try
+{
+    string text = System.IO.File.ReadAllText("data.txt");
+    Console.WriteLine(text);
+}
+catch (System.IO.FileNotFoundException)
+{
+    Console.WriteLine("File not found. Please check the path.");
+}
+👉 Used in: text editors, configuration loaders, log readers.
+
+Instance 2: Banking Application
+Scenario: Prevent overdrawing from an account.
+
+Implementation: Use a custom exception (InsufficientFundsException) to enforce rules.
+👉 Used in: financial apps, ATM systems, online banking.
+
+Instance 3: Web Applications
+Scenario: User inputs invalid data (like letters instead of numbers).
+
+Implementation: Use exception filters to catch and handle format errors gracefully.
+👉 Used in: e-commerce checkout forms, registration systems.

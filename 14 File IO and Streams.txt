@@ -1,0 +1,107 @@
+File I/O and Streams
+1. Reading and Writing Files
+C# provides the System.IO namespace for file operations.
+
+Writing to a File
+csharp
+using System.IO;
+
+class Program
+{
+    static void Main()
+    {
+        string path = "example.txt";
+        File.WriteAllText(path, "Hello, File I/O!");
+        Console.WriteLine("File written successfully.");
+    }
+}
+👉 Creates a file example.txt with the text inside.
+
+Reading from a File
+csharp
+string content = File.ReadAllText("example.txt");
+Console.WriteLine(content);
+👉 Output:
+
+Code
+Hello, File I/O!
+💡 Theory: File.WriteAllText and File.ReadAllText are quick ways to handle small files.
+
+2. Streams
+Streams allow you to read/write data sequentially — useful for large files or continuous data.
+
+Example: Using StreamReader and StreamWriter
+csharp
+using System.IO;
+
+class Program
+{
+    static void Main()
+    {
+        using (StreamWriter writer = new StreamWriter("data.txt"))
+        {
+            writer.WriteLine("Line 1");
+            writer.WriteLine("Line 2");
+        }
+
+        using (StreamReader reader = new StreamReader("data.txt"))
+        {
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                Console.WriteLine(line);
+            }
+        }
+    }
+}
+👉 Output:
+
+Code
+Line 1
+Line 2
+💡 Theory: using ensures the stream is closed properly (resource management).
+
+3. Asynchronous File I/O
+You can combine async programming with file operations for efficiency.
+
+csharp
+using System.IO;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        string path = "async.txt";
+        await File.WriteAllTextAsync(path, "Async write example");
+        string content = await File.ReadAllTextAsync(path);
+        Console.WriteLine(content);
+    }
+}
+👉 Output:
+
+Code
+Async write example
+💡 Theory: Async file I/O prevents blocking when dealing with large files.
+
+🌍 Real-World Instances
+Instance 1: Logging System
+Scenario: An application logs errors to a file.
+
+Implementation: Use StreamWriter to append logs.
+
+csharp
+File.AppendAllText("log.txt", "Error occurred at " + DateTime.Now + "\n");
+👉 Benefit: Keeps track of issues for debugging.
+
+Instance 2: Configuration Files
+Scenario: A game loads settings (resolution, sound volume) from a file.
+
+Implementation: Use File.ReadAllLines() to load settings.
+👉 Benefit: Easy customization without recompiling code.
+
+Instance 3: Data Processing
+Scenario: A financial app processes transaction records from a CSV file.
+
+Implementation: Use StreamReader to read line by line.
+👉 Benefit: Efficient handling of large datasets.

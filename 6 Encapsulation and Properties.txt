@@ -1,0 +1,179 @@
+Topic 6: Encapsulation and Properties (Detailed with Complex Example)
+Example: A Bank Account System
+csharp
+using System;
+
+class BankAccount
+{
+    // 🔒 Private backing field: actual data storage
+    private double balance;
+
+    // 🏦 Public property with validation logic
+    public double Balance
+    {
+        get { return balance; } // Getter: allows reading balance
+        set
+        {
+            if (value >= 0) // Validation: balance cannot be negative
+                balance = value;
+            else
+                Console.WriteLine("❌ Error: Balance cannot be negative!");
+        }
+    }
+
+    // 🏦 Auto-implemented property with init-only setter
+    public string AccountHolder { get; init; }
+
+    // 🔑 Constructor to initialize account
+    public BankAccount(string holder, double initialBalance)
+    {
+        AccountHolder = holder;
+        Balance = initialBalance; // Uses property, not field
+    }
+
+    // 💰 Deposit method
+    public void Deposit(double amount)
+    {
+        if (amount > 0)
+        {
+            Balance += amount;
+            Console.WriteLine($"✅ Deposited {amount}. New Balance: {Balance}");
+        }
+        else
+        {
+            Console.WriteLine("❌ Deposit amount must be positive!");
+        }
+    }
+
+    // 💸 Withdraw method
+    public void Withdraw(double amount)
+    {
+        if (amount > 0 && amount <= Balance)
+        {
+            Balance -= amount;
+            Console.WriteLine($"✅ Withdrawn {amount}. Remaining Balance: {Balance}");
+        }
+        else
+        {
+            Console.WriteLine("❌ Invalid withdrawal attempt!");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // 🎉 Create account with constructor
+        BankAccount acc = new BankAccount("Alice", 1000);
+
+        Console.WriteLine($"Account Holder: {acc.AccountHolder}");
+        Console.WriteLine($"Initial Balance: {acc.Balance}");
+
+        // 💰 Perform transactions
+        acc.Deposit(500);
+        acc.Withdraw(200);
+        acc.Withdraw(2000); // Invalid attempt
+        acc.Balance = -100; // Invalid direct set
+    }
+}
+Line-by-Line Explanation
+Class Definition
+csharp
+class BankAccount
+Defines a blueprint for a bank account. Encapsulation means all account-related data and behavior are inside this class.
+
+Private Backing Field
+csharp
+private double balance;
+private → Only accessible inside the class.
+
+This is the actual storage for balance. Outside code cannot touch it directly.
+
+Public Property with Validation
+csharp
+public double Balance
+{
+    get { return balance; }
+    set
+    {
+        if (value >= 0)
+            balance = value;
+        else
+            Console.WriteLine("❌ Error: Balance cannot be negative!");
+    }
+}
+Getter (get) → Allows reading the balance.
+
+Setter (set) → Controls how balance is changed.
+
+Encapsulation ensures rules are enforced (no negative balances).
+
+Auto-Implemented Property with init-only Setter
+csharp
+public string AccountHolder { get; init; }
+init means this property can only be set during object creation.
+
+Prevents accidental changes later (immutability).
+
+Constructor
+csharp
+public BankAccount(string holder, double initialBalance)
+{
+    AccountHolder = holder;
+    Balance = initialBalance;
+}
+Runs when you create a new account.
+
+Initializes AccountHolder and Balance.
+
+Notice: it uses the property Balance, not the field — so validation applies even at creation.
+
+Deposit Method
+csharp
+public void Deposit(double amount)
+Adds money to the account.
+
+Validates that the deposit amount is positive.
+
+Updates balance safely through the property.
+
+Withdraw Method
+csharp
+public void Withdraw(double amount)
+Removes money from the account.
+
+Checks that withdrawal is valid (not more than balance).
+
+Prevents overdrawing.
+
+Program Execution
+csharp
+BankAccount acc = new BankAccount("Alice", 1000);
+Creates a new account for Alice with an initial balance of 1000.
+
+csharp
+acc.Deposit(500);   // Balance becomes 1500
+acc.Withdraw(200);  // Balance becomes 1300
+acc.Withdraw(2000); // ❌ Invalid, not enough funds
+acc.Balance = -100; // ❌ Invalid, setter rejects negative
+Output
+Code
+Account Holder: Alice
+Initial Balance: 1000
+✅ Deposited 500. New Balance: 1500
+✅ Withdrawn 200. Remaining Balance: 1300
+❌ Invalid withdrawal attempt!
+❌ Error: Balance cannot be negative!
+Theory + Code Connection
+Encapsulation: Balance is hidden behind a property. Outside code cannot directly misuse it.
+
+Properties: Provide controlled access (with validation).
+
+init-only setters: Ensure account holder name cannot be changed after creation.
+
+Backing fields: Allow custom logic for property access.
+
+Methods (Deposit/Withdraw): Encapsulate business rules inside the class.
+
+✅ This is a realistic example showing how encapsulation protects data and enforces rules in a class.
